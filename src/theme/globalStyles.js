@@ -19,6 +19,10 @@ const GlobalStyle = createGlobalStyle`
     border: none;
     cursor: pointer;
   }
+
+  a {
+    text-decoration: none;
+  }
 `;
  
 export default GlobalStyle;
