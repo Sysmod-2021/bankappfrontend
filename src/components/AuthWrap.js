@@ -16,4 +16,5 @@ const StyledContainer = styled.div`
   align-items: center;
   justify-content: center;
   padding: 1.5rem;
+  background: ${props => props.theme.color.background};
 `
