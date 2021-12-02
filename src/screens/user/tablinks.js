@@ -1,10 +1,11 @@
 import Transactions from "../../components/transactions";
+import UserInfo from "../../components/dashboard";
 
 const tablinks = [
   {
     id: 0,
     title: "Dashboard",
-    component: null,
+    component: <UserInfo />,
   },
   {
     id: 1,
