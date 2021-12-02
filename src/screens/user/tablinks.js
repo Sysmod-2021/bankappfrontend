@@ -1,3 +1,4 @@
+import Transfer from "./transfer";
 import Dashboard from "./dashboard";
 
 const tablinks = [
@@ -9,7 +10,7 @@ const tablinks = [
   {
     id: 1,
     title: "P2P transfer",
-    component: null,
+    component: <Transfer />,
   }
 ];
 
