@@ -1,7 +1,12 @@
 import { useState } from "react";
 import History from "./History";
+import Overview from "./Overview";
 
-const Transactions = () => {
+const Dashboard = props => {
+
+  const { value } = props
+  const customerName = `${value.firstName} ${value.lastName}`
+  
   const [transactions] = useState([
     {
       id: 1,
@@ -43,9 +48,14 @@ const Transactions = () => {
 
   return (
     <div>
+      <Overview
+        balance={value.balance}
+        customerName={customerName}
+        accountNumber={value.accountId}
+      />
       <History transactions={transactions} />
     </div>
   );
 };
 
-export default Transactions;
+export default Dashboard;

@@ -1,22 +1,30 @@
 import styled from "styled-components";
+import CurrencyFormat from 'react-currency-format';
 
-const Dashboard = ({ balance, customerName, accountNumber }) => {
+const Overview = ({ balance, customerName, accountNumber }) => {
+
   return (
     <StyledWrap>
-      <div class="wrapper">
+      <div className="wrapper">
         <div>
-          <p class="balance">${balance.toLocaleString()}</p>
+          <CurrencyFormat 
+            value={balance} 
+            thousandSeparator={true} 
+            prefix="€"
+            displayType="text"
+            className="balance"
+          />
         </div>
-        <div>
-          <p> {customerName}</p>
-          <p class="acc"> {accountNumber}</p>
+        <div className="is-right">
+          <p>{customerName}</p>
+          <p className="acc"> {accountNumber}</p>
         </div>
       </div>
     </StyledWrap>
   );
 };
 
-export default Dashboard;
+export default Overview;
 
 const StyledWrap = styled.div`
   .wrapper {
@@ -34,6 +42,10 @@ const StyledWrap = styled.div`
   .balance {
     font-size: 2em;
     font-weight: 400;
+  }
+
+  .is-right {
+    text-align: right;
   }
 
   .acc {

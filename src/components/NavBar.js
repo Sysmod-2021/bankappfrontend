@@ -4,7 +4,7 @@ const NavBar = ({ name }) => {
     return (
         <StyledContainer>
             <div className="main-container">
-                <h2 className="greeting">Welcome {name}</h2>
+                <h2 className="greeting">Hello, {name}</h2>
                 <button className="submit-btn">Log Out</button>
             </div>
         </StyledContainer>
@@ -15,7 +15,7 @@ export default NavBar;
 
 const StyledContainer = styled.div`
     padding: 1.25rem 1.5rem;
-    background: white;
+    // background: white;
 
     .main-container {
         max-width: 1200px;
