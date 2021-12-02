@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Dashboard = ({ balance, customerName, accountNumber }) => {
+const Overview = ({ balance, customerName, accountNumber }) => {
   return (
     <StyledWrap>
       <div class="wrapper">
@@ -16,7 +16,7 @@ const Dashboard = ({ balance, customerName, accountNumber }) => {
   );
 };
 
-export default Dashboard;
+export default Overview;
 
 const StyledWrap = styled.div`
   .wrapper {

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import History from "./History";
-import Dashboard from "./Dashboard";
+import Overview from "./Overview";
 
-const Transactions = () => {
+const Dashboard = () => {
   const [balance] = useState(14423.82);
   const [customerName] = useState("Chioma Nkem-Eze");
   const [accountNumber] = useState("EZY-123456789-123456789");
@@ -47,7 +47,7 @@ const Transactions = () => {
 
   return (
     <div>
-      <Dashboard
+      <Overview
         balance={balance}
         customerName={customerName}
         accountNumber={accountNumber}
@@ -57,4 +57,4 @@ const Transactions = () => {
   );
 };
 
-export default Transactions;
+export default Dashboard;

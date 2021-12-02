@@ -1,21 +1,16 @@
-import Transactions from "../../components/transactions";
+import Dashboard from "./dashboard";
 
 const tablinks = [
   {
     id: 0,
     title: "Dashboard",
-    component: null,
+    component: <Dashboard />,
   },
   {
     id: 1,
-    title: "New transfer",
+    title: "P2P transfer",
     component: null,
-  },
-  {
-    id: 2,
-    title: "Transactions",
-    component: <Transactions />,
-  },
+  }
 ];
 
 export default tablinks;
