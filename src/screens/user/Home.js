@@ -8,14 +8,23 @@ const HomeScreen = () => {
   const [activeTab, setActiveTab] = useState(0);
   const onClickTabItem = (tab) => setActiveTab(tab);
 
+  const customer = {
+    id: "f709ac6a-f8e5-4f07-9171-ec5a10eeaecb",
+    balance: 100,
+    currency: "EUR",
+    firstName: "John",
+    lastName: "Doe",
+    accountID: "01e09b2c-72e0-40f9-ab94-9b3bb6331741"
+  }
+
   return (
-    <AppWrap name="Chioma Nkem-Eze">
+    <AppWrap name={`${customer.firstName} ${customer.lastName}`}>
       <StyledWrap>
-        <div class="tab">
+        <div className="tab">
           {tablinks.map((tab) => (
             <button
               key={tab.id}
-              class="tablinks"
+              className="tablinks"
               onClick={() => onClickTabItem(tab.id)}
             >
               {tab.title}
@@ -23,15 +32,15 @@ const HomeScreen = () => {
           ))}
         </div>
 
-        <div class="tabcontent">
+        <div className="tabcontent">
           {tablinks.map((tab) => (
             <div
               key={tab.id}
               className={activeTab === tab.id ? "d-block" : "d-none"}
             >
-              <h1 class="heading">{tab.title}</h1>
-              <div class="content">
-                {tab.component ? tab.component : "There is no content here"}
+              <h1 className="heading">{tab.title}</h1>
+              <div className="content">
+                {tab.component ? tab.component(customer) : "There is no content here"}
               </div>
             </div>
           ))}

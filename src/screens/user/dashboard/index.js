@@ -2,10 +2,11 @@ import { useState } from "react";
 import History from "./History";
 import Overview from "./Overview";
 
-const Dashboard = () => {
-  const [balance] = useState(14423.82);
-  const [customerName] = useState("Chioma Nkem-Eze");
-  const [accountNumber] = useState("EZY-123456789-123456789");
+const Dashboard = props => {
+
+  const { value } = props
+  const customerName = `${value.firstName} ${value.lastName}`
+  
   const [transactions] = useState([
     {
       id: 1,
@@ -48,9 +49,9 @@ const Dashboard = () => {
   return (
     <div>
       <Overview
-        balance={balance}
+        balance={value.balance}
         customerName={customerName}
-        accountNumber={accountNumber}
+        accountNumber={value.accountId}
       />
       <History transactions={transactions} />
     </div>

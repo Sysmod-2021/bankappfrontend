@@ -1,23 +1,12 @@
 import styled from "styled-components";
 
 const History = ({ transactions }) => {
-  const transactionsList = transactions.map((transaction) => (
-    <tr key={transaction.id}>
-      <th scope="row">{transaction.sendingAccount}</th>
-      <td>{transaction.receivingAccount}</td>
-      <td>${transaction.amount}</td>
-      <td>
-        {transaction.date} {transaction.time}
-      </td>
-      <td>{transaction.status}</td>
-    </tr>
-  ));
   return (
     <StyledWrap>
-      <div class="transactions-wapper">
+      <div className="transactions-wapper">
         <h2>Transaction History</h2>
-        <div class="transactions-container">
-          <table class="responsive-table">
+        <div className="transactions-container">
+          <table className="responsive-table">
             <thead>
               <tr>
                 <th scope="col">Sending Acoount</th>
@@ -27,7 +16,19 @@ const History = ({ transactions }) => {
                 <th scope="col">Status</th>
               </tr>
             </thead>
-            <tbody class="table-row">{transactionsList}</tbody>
+            <tbody className="table-row">
+              {transactions && transactions.map((transaction) => (
+                <tr key={transaction.id}>
+                  <td scope="row">{transaction.sendingAccount}</td>
+                  <td>{transaction.receivingAccount}</td>
+                  <td>${transaction.amount}</td>
+                  <td>
+                    {transaction.date} {transaction.time}
+                  </td>
+                  <td>{transaction.status}</td>
+                </tr>
+              ))}
+            </tbody>
           </table>
         </div>
       </div>
@@ -46,10 +47,10 @@ const StyledWrap = styled.div`
   }
 
   .transactions-container {
-    margin: 5% 3%;
+    margin: 5% 0;
 
     @media (min-width: 48em) {
-      margin: 2%;
+      margin: 2% 0;
     }
 
     @media (min-width: 75em) {
@@ -91,10 +92,10 @@ const StyledWrap = styled.div`
       }
 
       th {
-        background-color: #333333;
+        background-color: ${(props) => props.theme.color.black};
         border: 1px solid ${(props) => props.theme.color.outline};
         font-weight: normal;
-        text-align: center;
+        text-align: left;
         color: white;
 
         &:first-of-type {
@@ -197,12 +198,12 @@ const StyledWrap = styled.div`
       }
 
       td {
-        text-align: right;
+        text-align: left;
 
         @media (min-width: 48em) {
           border-left: 1px solid ${(props) => props.theme.color.outline};
           border-bottom: 1px solid ${(props) => props.theme.color.outline};
-          text-align: center;
+          text-align: left;
         }
 
         &:last-of-type {
@@ -213,7 +214,7 @@ const StyledWrap = styled.div`
       }
 
       td[data-type="currency"] {
-        text-align: right;
+        text-align: left;
       }
 
       td[data-title]:before {

@@ -3,13 +3,13 @@ import styled from "styled-components";
 const Overview = ({ balance, customerName, accountNumber }) => {
   return (
     <StyledWrap>
-      <div class="wrapper">
+      <div className="wrapper">
         <div>
-          <p class="balance">${balance.toLocaleString()}</p>
+          <p className="balance">${balance.toLocaleString()}</p>
         </div>
-        <div>
+        <div className="is-right">
           <p> {customerName}</p>
-          <p class="acc"> {accountNumber}</p>
+          <p className="acc"> {accountNumber}</p>
         </div>
       </div>
     </StyledWrap>
@@ -34,6 +34,10 @@ const StyledWrap = styled.div`
   .balance {
     font-size: 2em;
     font-weight: 400;
+  }
+
+  .is-right {
+    text-align: right;
   }
 
   .acc {

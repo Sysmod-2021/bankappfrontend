@@ -2,14 +2,37 @@ import { useState } from "react";
 import styled from "styled-components";
 import CurrencyFormat from 'react-currency-format';
 
-const Transfer = () => {
+import { makeP2PTransfer } from "../../../api";
+
+const Transfer = props => {
+
+    const { value } = props
 
     const [amount, setAmount] = useState("")
-    const [account, setAccount] = useState("")
     const [description, setDescription] = useState("")
+    const [receiverAccountID, setReceiverAccountID] = useState("")
 
-    const handleSubmit = e => {
-        e.preventDefault()
+    const handleSubmit = async e => {
+        e.preventDefault();
+
+        try {
+            const { data: response } = await makeP2PTransfer(value.id, receiverAccountID, amount, description)
+            const { message, status, data } = response;
+
+
+            if(status === "ERROR" && message) {
+                return;
+            }
+
+            setAmount("");
+            setDescription("");
+            setReceiverAccountID("");
+
+            
+
+        } catch (error) {
+            console.log(error.message)
+        }
     }
 
     return (
@@ -18,9 +41,9 @@ const Transfer = () => {
                 Beneficiary Account
                 <input 
                     id="beneficiary-account" 
-                    handleChange={text => setAccount(text)} 
-                    value={account}
                     type="text" 
+                    value={receiverAccountID}
+                    onChange={e => setReceiverAccountID(e.target.value)} 
                     placeholder="Beneficiary Account" 
                     required 
                 />
@@ -28,15 +51,15 @@ const Transfer = () => {
 
             <label htmlFor="amount">
                 Transfer Amount
-                <div class="is-amount">
-                    <input class="is-currency" type="text" value="€" required disabled />
+                <div className="is-amount">
+                    <input className="is-currency" type="text" value="€" required disabled />
                     <CurrencyFormat 
                         id="amount" 
-                        onValueChange={values  => setAmount(values.value)} 
                         value={amount} 
-                        thousandSeparator={true} 
                         decimalScale={3} 
+                        thousandSeparator={true} 
                         placeholder="Transfer Amount"
+                        onValueChange={values  => setAmount(values.value)} 
                         required
                     />
                 </div>
@@ -45,11 +68,11 @@ const Transfer = () => {
             <label htmlFor="description">
                 Transaction Description
                 <input 
+                    type="text" 
                     id="description" 
                     value={description}
-                    handleChange={text => setDescription(text)} 
-                    type="text" 
                     placeholder="Transaction Description" 
+                    onChange={e => setDescription(e.target.value)} 
                     required 
                 />
             </label>
