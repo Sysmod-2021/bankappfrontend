@@ -1,14 +1,22 @@
 import styled from "styled-components";
+import CurrencyFormat from 'react-currency-format';
 
 const Overview = ({ balance, customerName, accountNumber }) => {
+
   return (
     <StyledWrap>
       <div className="wrapper">
         <div>
-          <p className="balance">${balance.toLocaleString()}</p>
+          <CurrencyFormat 
+            value={balance} 
+            thousandSeparator={true} 
+            prefix="€"
+            displayType="text"
+            className="balance"
+          />
         </div>
         <div className="is-right">
-          <p> {customerName}</p>
+          <p>{customerName}</p>
           <p className="acc"> {accountNumber}</p>
         </div>
       </div>

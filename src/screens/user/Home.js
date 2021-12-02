@@ -14,7 +14,7 @@ const HomeScreen = () => {
     currency: "EUR",
     firstName: "John",
     lastName: "Doe",
-    accountID: "01e09b2c-72e0-40f9-ab94-9b3bb6331741"
+    accountId: "01e09b2c-72e0-40f9-ab94-9b3bb6331741"
   }
 
   return (

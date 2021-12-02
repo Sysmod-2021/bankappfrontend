@@ -3,10 +3,12 @@ import styled from "styled-components";
 import CurrencyFormat from 'react-currency-format';
 
 import { makeP2PTransfer } from "../../../api";
+import Toast, { useFeedbackToast } from '../../../components/Feedback';
 
 const Transfer = props => {
 
     const { value } = props
+    const { open, close, feedback } = useFeedbackToast()
 
     const [amount, setAmount] = useState("")
     const [description, setDescription] = useState("")
@@ -17,68 +19,73 @@ const Transfer = props => {
 
         try {
             const { data: response } = await makeP2PTransfer(value.id, receiverAccountID, amount, description)
-            const { message, status, data } = response;
+            const { message, status } = response;
 
 
             if(status === "ERROR" && message) {
+                open(message, status)
                 return;
             }
 
             setAmount("");
             setDescription("");
             setReceiverAccountID("");
-
-            
+            open("Your transfer was successful :)", status)
 
         } catch (error) {
-            console.log(error.message)
+            open(error.message, "error")
         }
     }
 
     return (
-        <StyledForm onSubmit={e => handleSubmit(e)}>
-            <label htmlFor="beneficiary-account">
-                Beneficiary Account
-                <input 
-                    id="beneficiary-account" 
-                    type="text" 
-                    value={receiverAccountID}
-                    onChange={e => setReceiverAccountID(e.target.value)} 
-                    placeholder="Beneficiary Account" 
-                    required 
-                />
-            </label>
-
-            <label htmlFor="amount">
-                Transfer Amount
-                <div className="is-amount">
-                    <input className="is-currency" type="text" value="€" required disabled />
-                    <CurrencyFormat 
-                        id="amount" 
-                        value={amount} 
-                        decimalScale={3} 
-                        thousandSeparator={true} 
-                        placeholder="Transfer Amount"
-                        onValueChange={values  => setAmount(values.value)} 
-                        required
+        <>
+            <StyledForm onSubmit={e => handleSubmit(e)}>
+                <label htmlFor="beneficiary-account">
+                    Beneficiary Account
+                    <input 
+                        id="beneficiary-account" 
+                        type="text" 
+                        value={receiverAccountID}
+                        onChange={e => setReceiverAccountID(e.target.value)} 
+                        placeholder="Beneficiary Account" 
+                        required 
                     />
-                </div>
-            </label>
+                </label>
 
-            <label htmlFor="description">
-                Transaction Description
-                <input 
-                    type="text" 
-                    id="description" 
-                    value={description}
-                    placeholder="Transaction Description" 
-                    onChange={e => setDescription(e.target.value)} 
-                    required 
-                />
-            </label>
+                <label htmlFor="amount">
+                    Transfer Amount
+                    <div className="is-amount">
+                        <input className="is-currency" type="text" value="€" required disabled />
+                        <CurrencyFormat 
+                            id="amount" 
+                            value={amount} 
+                            decimalScale={3} 
+                            thousandSeparator={true} 
+                            placeholder="Transfer Amount"
+                            allowNegative={false}
+                            onValueChange={values  => setAmount(values.value)} 
+                            required
+                        />
+                    </div>
+                </label>
 
-            <button type="submit">Make Transfer</button>
-        </StyledForm>
+                <label htmlFor="description">
+                    Transaction Description
+                    <input 
+                        type="text" 
+                        id="description" 
+                        value={description}
+                        placeholder="Transaction Description" 
+                        onChange={e => setDescription(e.target.value)} 
+                        required 
+                    />
+                </label>
+
+                <button type="submit">Make Transfer</button>
+            </StyledForm>
+            
+            { feedback && <Toast close={close} feedback={feedback} /> }
+        </>
     )
 
 }
