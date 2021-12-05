@@ -2,7 +2,7 @@
 Frontend for bank app - sysmod 2021
 
 - thatdamiguy
-- Monika Shrestha
+- Monika Shrestha 
 - Joanna Mae Cabuyadao
 - Chioma Jessica Nkem-Eze
 - Armin Remenyi
