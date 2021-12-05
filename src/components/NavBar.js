@@ -4,7 +4,7 @@ const NavBar = ({ name }) => {
     return (
         <StyledContainer>
             <div className="main-container">
-                <h2 className="greeting">Hello, {name}</h2>
+                <h2 className="greeting">{name}</h2>
                 <button className="submit-btn">Log Out</button>
             </div>
         </StyledContainer>

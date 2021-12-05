@@ -15,7 +15,6 @@ export const useFeedbackToast = () => {
 }
 
 const Toast = ({ close, feedback }) => {
-    console.log(feedback)
     return (
         <Wrapper type={feedback.type}>
             <p>{feedback.caption}</p>

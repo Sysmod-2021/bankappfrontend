@@ -1,24 +1,46 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import tablinks from "./tablinks";
 import AppWrap from "../../components/AppWrap";
+import { getCustomerDetails } from "../../api";
 
 const HomeScreen = () => {
   const [activeTab, setActiveTab] = useState(0);
+  const [customer, setCustomer] = useState(null);
+
   const onClickTabItem = (tab) => setActiveTab(tab);
 
-  const customer = {
-    id: "f709ac6a-f8e5-4f07-9171-ec5a10eeaecb",
-    balance: 100,
-    currency: "EUR",
-    firstName: "John",
-    lastName: "Doe",
-    accountId: "01e09b2c-72e0-40f9-ab94-9b3bb6331741"
+  // const customer = {
+  //   id: "f709ac6a-f8e5-4f07-9171-ec5a10eeaecb",
+  //   balance: 100,
+  //   currency: "EUR",
+  //   firstName: "John",
+  //   lastName: "Doe",
+  //   accountId: "01e09b2c-72e0-40f9-ab94-9b3bb6331741"
+  // }
+
+  const getCustomer = async () => {
+    try {
+      const { data: response } = await getCustomerDetails('f709ac6a-f8e5-4f07-9171-ec5a10eeaecb')
+      const { status, data } = response;
+
+      if(status === "SUCCESS") {
+        setCustomer(data)
+        return;
+      }
+      
+    } catch(error) {
+      console.log(error.message)
+    }
   }
 
+  useEffect(() => {
+    getCustomer()
+  }, [])
+
   return (
-    <AppWrap name={`${customer.firstName} ${customer.lastName}`}>
+    <AppWrap name={customer ? `Hello, ${customer?.firstName} ${customer?.lastName}` : "Hello"}>
       <StyledWrap>
         <div className="tab">
           {tablinks.map((tab) => (
@@ -40,7 +62,7 @@ const HomeScreen = () => {
             >
               <h1 className="heading">{tab.title}</h1>
               <div className="content">
-                {tab.component ? tab.component(customer) : "There is no content here"}
+                {tab.component && customer? tab.component(customer) : "There is no content here"}
               </div>
             </div>
           ))}

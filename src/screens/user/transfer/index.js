@@ -3,6 +3,7 @@ import styled from "styled-components";
 import CurrencyFormat from 'react-currency-format';
 
 import { makeP2PTransfer } from "../../../api";
+import Loader from "../../../components/Loader";
 import Toast, { useFeedbackToast } from '../../../components/Feedback';
 
 const Transfer = props => {
@@ -11,6 +12,7 @@ const Transfer = props => {
     const { open, close, feedback } = useFeedbackToast()
 
     const [amount, setAmount] = useState("")
+    const [loading, setLoading] = useState(false)
     const [description, setDescription] = useState("")
     const [receiverAccountID, setReceiverAccountID] = useState("")
 
@@ -18,12 +20,18 @@ const Transfer = props => {
         e.preventDefault();
 
         try {
-            const { data: response } = await makeP2PTransfer(value.id, receiverAccountID, amount, description)
-            const { message, status } = response;
+            const { data: response } = await makeP2PTransfer(value.customerId, receiverAccountID, amount, description)
+            const { message, status, data } = response;
 
+            setLoading(false);
 
             if(status === "ERROR" && message) {
                 open(message, status)
+                return;
+            }
+
+            if(data && (data.status !== "EXECUTED")) {
+                open(data.rejectionDescription, "error")
                 return;
             }
 
@@ -81,7 +89,7 @@ const Transfer = props => {
                     />
                 </label>
 
-                <button type="submit">Make Transfer</button>
+                <button type="submit" disabled={loading}>{loading ? <Loader /> : "Make Transfer" }</button>
             </StyledForm>
             
             { feedback && <Toast close={close} feedback={feedback} /> }
@@ -150,5 +158,7 @@ const StyledForm = styled.form`
         background: ${props => props.theme.color.primary};
         font-weight: 500;
         color: white;
+        min-width: 125px;
+        min-height: 40px;
     }
 `;
