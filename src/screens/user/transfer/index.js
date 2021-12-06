@@ -6,9 +6,8 @@ import { makeP2PTransfer } from "../../../api";
 import Loader from "../../../components/Loader";
 import Toast, { useFeedbackToast } from '../../../components/Feedback';
 
-const Transfer = props => {
+const Transfer = () => {
 
-    const { value } = props
     const { open, close, feedback } = useFeedbackToast()
 
     const [amount, setAmount] = useState("")
@@ -20,7 +19,7 @@ const Transfer = props => {
         e.preventDefault();
 
         try {
-            const { data: response } = await makeP2PTransfer(value.customerId, receiverAccountID, amount, description)
+            const { data: response } = await makeP2PTransfer(receiverAccountID, amount, description)
             const { message, status, data } = response;
 
             setLoading(false);

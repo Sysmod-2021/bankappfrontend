@@ -10,7 +10,7 @@ const tablinks = [
   {
     id: 1,
     title: "P2P transfer",
-    component: (value) => <Transfer value={value} />,
+    component: () => <Transfer />,
   }
 ];
 
