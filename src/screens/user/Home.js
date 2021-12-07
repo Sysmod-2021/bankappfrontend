@@ -1,28 +1,43 @@
-import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import tablinks from "./tablinks";
 import AppWrap from "../../components/AppWrap";
-import { getCustomerDetails } from "../../api";
+import { getCustomerDetails, logout } from "../../api";
+import useLocalStorage from "../../hooks/useLocalStorage";
+import Toast, { useFeedbackToast } from '../../components/Feedback';
 
 const HomeScreen = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [customer, setCustomer] = useState(null);
 
+  let navigate = useNavigate();
+  const { open, close, feedback } = useFeedbackToast()
+  const [isLoggedIn, setIsLoggedIn] = useLocalStorage("isLoggedIn", true);
+
   const onClickTabItem = (tab) => setActiveTab(tab);
 
-  // const customer = {
-  //   id: "f709ac6a-f8e5-4f07-9171-ec5a10eeaecb",
-  //   balance: 100,
-  //   currency: "EUR",
-  //   firstName: "John",
-  //   lastName: "Doe",
-  //   accountId: "01e09b2c-72e0-40f9-ab94-9b3bb6331741"
-  // }
+  const onLogOut = async () => {
+    try {
+      const { data } = await logout()
+      const { status } = data;
+
+      if(status === "SUCCESS") {
+        setIsLoggedIn(false);
+        navigate("/login");
+        return;
+      }
+
+      open("Logout Unsuccessful! Please try again", "error")
+    } catch (error) {
+      open(error.message, "error")
+    }
+  }
 
   const getCustomer = async () => {
     try {
-      const { data: response } = await getCustomerDetails('f709ac6a-f8e5-4f07-9171-ec5a10eeaecb')
+      const { data: response } = await getCustomerDetails()
       const { status, data } = response;
 
       if(status === "SUCCESS") {
@@ -40,7 +55,7 @@ const HomeScreen = () => {
   }, [])
 
   return (
-    <AppWrap name={customer ? `Hello, ${customer?.firstName} ${customer?.lastName}` : "Hello"}>
+    <AppWrap name={customer ? `Hello, ${customer?.firstName} ${customer?.lastName}` : "Hello"} onLogOut={onLogOut}>
       <StyledWrap>
         <div className="tab">
           {tablinks.map((tab) => (
@@ -68,6 +83,8 @@ const HomeScreen = () => {
           ))}
         </div>
       </StyledWrap>
+
+      { feedback && <Toast close={close} feedback={feedback} /> }
     </AppWrap>
   );
 };

@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import NavBar from "./NavBar";
 
-const AppWrap = ({ name, children }) => {
+const AppWrap = ({ name, onLogOut, children }) => {
   return (
     <StyledContainer>
-      <NavBar name={name} />
+      <NavBar name={name} onLogOut={onLogOut} />
       <StyledContentWrap>{children}</StyledContentWrap>
     </StyledContainer>
   );
