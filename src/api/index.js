@@ -19,9 +19,13 @@ export const authenticate = (email, password) => {
 }
 
 export const makeP2PTransfer = (receiverAccountId, amount, description) => {
-    return axios.post(`/customers/transactions/create`, {
-        receiverAccountId,
-        amount, 
-        description
+    return fetch(`${process.env.REACT_APP_BASE_URL}/customers/transactions/create`, {
+        credentials: 'include',
+        method: 'post',
+        body: JSON.stringify({
+            receiverAccountId,
+            amount, 
+            description
+        })
     })
 }
