@@ -39,16 +39,13 @@ const History = ({ transactions }) => {
                       />
                     </td>
                     <td>
-                      {" "}
                       <em>Transaction Description</em> {transaction.description}
                     </td>
                     <td>
-                      {" "}
                       <em>Date</em>
-                      {new Date(transaction.timestamp).toString()}
+                      {new Date(transaction.timestamp).toUTCString()}
                     </td>
                     <td>
-                      {" "}
                       <em>Status</em>
                       {transaction.status}
                     </td>
