@@ -19,8 +19,9 @@ const Transfer = () => {
         e.preventDefault();
 
         try {
-            const { data: response } = await makeP2PTransfer(receiverAccountID, amount, description)
-            const { message, status, data } = response;
+            const response = await makeP2PTransfer(receiverAccountID, amount, description)
+            const responseData = await response.json()
+            const { message, status, data } = responseData;
 
             setLoading(false);
 
