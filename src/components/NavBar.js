@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
-const NavBar = ({ name, onLogOut }) => {
+const NavBar = ({ name }) => {
     return (
         <StyledContainer>
             <div className="main-container">
                 <h2 className="greeting">{name}</h2>
-                <button className="submit-btn" onClick={onLogOut}>Log Out</button>
+                <button className="submit-btn">Log Out</button>
             </div>
         </StyledContainer>
     )

@@ -1,80 +1,30 @@
-import { useState } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
-import { authenticate } from "../../api";
-import Loader from "../../components/Loader";
 import PageWrap from "../../components/AuthWrap";
-import useLocalStorage from "../../hooks/useLocalStorage";
-import Toast, { useFeedbackToast } from '../../components/Feedback';
 
 
 const LoginScreen = () => {
 
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [loading, setLoading] = useState(false)
-
-  let navigate = useNavigate();
-  const { open, close, feedback } = useFeedbackToast()
-  const [isLoggedIn, setIsLoggedIn] = useLocalStorage("isLoggedIn", false);
-
-  const handleSubmit = async e => {
-    e.preventDefault();
-
-    try {
-      const { data } = await authenticate(email, password)
-      const { status, message } = data;
-
-      setLoading(false);
-
-      if(status === "SUCCESS") {
-        setIsLoggedIn(true);
-
-        setEmail("");
-        setPassword("");
-        navigate("/");
-        return;
-      }
-
-      open(message, "error")
-    } catch (error) {
-      open(error.message, "error")
-    }
-  }
+  const { register, handleSubmit } = useForm({ shouldUseNativeValidation: true });
+  const onSubmit = async data => { console.log(data); };
 
   return (
     <PageWrap>
       <StyledWrap>
         <h2 className="heading">Openbank Login</h2>
-        <form className="login-form" onSubmit={e => handleSubmit(e)}>
-          <label htmlFor="email">
-            Email
-            <input 
-              required
-              id="email" 
-              type="email"  
-              value={email}
-              placeholder="Email"
-              onChange={e => setEmail(e.target.value)} 
-            />
-          </label>  
+        <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
+          <label htmlFor="username">
+            Username
+            <input id="username" type="text" {...register("username", { required: "Please enter your username" })} />
+          </label>    
           <label htmlFor="password">
             Password
-            <input 
-              required
-              id="password" 
-              type="password"  
-              value={password}
-              placeholder="Password"
-              onChange={e => setPassword(e.target.value)} 
-            />
+            <input id="password" type="password" {...register("password", { required: "Please enter your password" })} />
           </label>   
-          <button className="submit-btn" type="submit" disabled={loading}>{loading ? <Loader /> : "Login" }</button>
+          <button className="submit-btn">Login</button>
         </form>
       </StyledWrap>
-
-      { feedback && <Toast close={close} feedback={feedback} /> }
     </PageWrap>
   );
 }
