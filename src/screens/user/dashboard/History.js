@@ -7,21 +7,21 @@ const History = ({ transactions }) => {
       <div className="transactions-wapper">
         <h2>Transaction History</h2>
         <div className="transactions-container">
-          <table className="responsive-table">
-            <thead>
-              <tr>
-                <th scope="col">Sending Acoount</th>
-                <th scope="col">Receiving Account</th>
-                <th scope="col">Amount</th>
-                <th scope="col">Transaction Description</th>
-                <th scope="col">Date</th>
-                <th scope="col">Status</th>
-              </tr>
-            </thead>
-            <tbody className="table-row">
-              {transactions &&
-                transactions.map((transaction) => (
-                  <tr key={transaction.transactionId} class="table-el">
+          {transactions && transactions.length > 0 ? (
+            <table className="responsive-table">
+              <thead>
+                <tr>
+                  <th scope="col">Sending Acoount</th>
+                  <th scope="col">Receiving Account</th>
+                  <th scope="col">Amount</th>
+                  <th scope="col">Transaction Description</th>
+                  <th scope="col">Date</th>
+                  <th scope="col">Status</th>
+                </tr>
+              </thead>
+              <tbody className="table-row">
+                {transactions.map((transaction) => (
+                  <tr key={transaction.transactionId} className="table-el">
                     <td scope="row">
                       <em>Sending Acoount</em> {transaction.sourceID}
                     </td>
@@ -51,8 +51,13 @@ const History = ({ transactions }) => {
                     </td>
                   </tr>
                 ))}
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          ) : (
+            <h3 className="noTransact">
+              You haven't made any transactions yet.
+            </h3>
+          )}
         </div>
       </div>
     </StyledWrap>
@@ -84,6 +89,13 @@ const StyledWrap = styled.div`
 
   .table-el {
     border-bottom: 1px solid #e0e0e0;
+  }
+
+  .noTransact {
+    text-align: center;
+    width: 100%;
+    font-weight: 300;
+    font-size: 1.8rem;
   }
 
   .responsive-table {

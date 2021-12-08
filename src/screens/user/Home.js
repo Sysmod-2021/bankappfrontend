@@ -1,61 +1,88 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 import tablinks from "./tablinks";
 import AppWrap from "../../components/AppWrap";
 import { getCustomerDetails, logout } from "../../api";
 import useLocalStorage from "../../hooks/useLocalStorage";
-import Toast, { useFeedbackToast } from '../../components/Feedback';
+import Toast, { useFeedbackToast } from "../../components/Feedback";
 
 const HomeScreen = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [customer, setCustomer] = useState(null);
 
   let navigate = useNavigate();
-  const { open, close, feedback } = useFeedbackToast()
+  const { open, close, feedback } = useFeedbackToast();
   const [isLoggedIn, setIsLoggedIn] = useLocalStorage("isLoggedIn", true);
 
   const onClickTabItem = (tab) => setActiveTab(tab);
 
   const onLogOut = async () => {
     try {
-      const { data } = await logout()
+      const { data } = await logout();
       const { status } = data;
 
-      if(status === "SUCCESS") {
+      if (status === "SUCCESS") {
         setIsLoggedIn(false);
         navigate("/login");
         return;
       }
 
-      open("Logout Unsuccessful! Please try again", "error")
+      open("Logout Unsuccessful! Please try again", "error");
     } catch (error) {
-      open(error.message, "error")
+      open(error.message, "error");
     }
-  }
+  };
 
   const getCustomer = async () => {
     try {
-      const { data: response } = await getCustomerDetails()
+      const { data: response } = await getCustomerDetails();
       const { status, data } = response;
 
-      if(status === "SUCCESS") {
-        setCustomer(data)
+      if (status === "SUCCESS") {
+        setCustomer(data);
         return;
       }
-      
-    } catch(error) {
-      console.log(error.message)
+    } catch (error) {
+      console.log(error.message);
     }
-  }
+  };
+
+  const useInterval = (callback, delay) => {
+    const savedCallback = useRef();
+
+    useEffect(() => {
+      savedCallback.current = callback;
+    });
+
+    useEffect(() => {
+      function tick() {
+        savedCallback.current();
+      }
+
+      let id = setInterval(tick, delay);
+      return () => clearInterval(id);
+    }, [delay]);
+  };
 
   useEffect(() => {
-    getCustomer()
-  }, [])
+    getCustomer();
+  }, []);
+
+  useInterval(() => {
+    getCustomer();
+  }, 5000);
 
   return (
-    <AppWrap name={customer ? `Hello, ${customer?.firstName} ${customer?.lastName}` : "Hello"} onLogOut={onLogOut}>
+    <AppWrap
+      name={
+        customer
+          ? `Hello, ${customer?.firstName} ${customer?.lastName}`
+          : "Hello"
+      }
+      onLogOut={onLogOut}
+    >
       <StyledWrap>
         <div className="tab">
           {tablinks.map((tab) => (
@@ -77,14 +104,16 @@ const HomeScreen = () => {
             >
               <h1 className="heading">{tab.title}</h1>
               <div className="content">
-                {tab.component && customer? tab.component(customer) : "There is no content here"}
+                {tab.component && customer
+                  ? tab.component(customer)
+                  : "There is no content here"}
               </div>
             </div>
           ))}
         </div>
       </StyledWrap>
 
-      { feedback && <Toast close={close} feedback={feedback} /> }
+      {feedback && <Toast close={close} feedback={feedback} />}
     </AppWrap>
   );
 };
