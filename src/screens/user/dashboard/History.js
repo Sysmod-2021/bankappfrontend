@@ -23,7 +23,7 @@ const History = ({ transactions, customerAccID }) => {
               <tbody className="table-row">
                 {transactions.map((transaction) => (
                   <tr key={transaction.transactionId} className="table-el">
-                    <td scope="row">
+                    <td>
                       <em>Sending Acoount</em>{" "}
                       {transaction.sourceID
                         ? transaction.sourceID
@@ -243,22 +243,6 @@ const StyledWrap = styled.div`
           @media (min-width: 48em) {
             background-color: rgba(0, 0, 0, 0.12);
           }
-        }
-      }
-
-      th[scope="row"] {
-        background-color: #333333;
-        color: white;
-
-        @media (min-width: 30em) {
-          border-left: 1px solid ${(props) => props.theme.color.outline};
-          border-bottom: 1px solid ${(props) => props.theme.color.outline};
-        }
-
-        @media (min-width: 48em) {
-          background-color: transparent;
-          color: rgba(0, 0, 0.87);
-          text-align: left;
         }
       }
 
