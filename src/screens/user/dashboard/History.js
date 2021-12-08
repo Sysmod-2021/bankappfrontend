@@ -1,35 +1,73 @@
 import styled from "styled-components";
+import CurrencyFormat from "react-currency-format";
 
-const History = ({ transactions }) => {
+const History = ({ transactions, customerAccID }) => {
   return (
     <StyledWrap>
       <div className="transactions-wapper">
         <h2>Transaction History</h2>
         <div className="transactions-container">
-          <table className="responsive-table">
-            <thead>
-              <tr>
-                <th scope="col">Sending Acoount</th>
-                <th scope="col">Receiving Account</th>
-                <th scope="col">Amount</th>
-                <th scope="col">Date</th>
-                <th scope="col">Status</th>
-              </tr>
-            </thead>
-            <tbody className="table-row">
-              {transactions && transactions.map((transaction) => (
-                <tr key={transaction.id}>
-                  <td scope="row">{transaction.sendingAccount}</td>
-                  <td>{transaction.receivingAccount}</td>
-                  <td>${transaction.amount}</td>
-                  <td>
-                    {transaction.date} {transaction.time}
-                  </td>
-                  <td>{transaction.status}</td>
+          {transactions && transactions.length > 0 ? (
+            <table className="responsive-table">
+              <thead>
+                <tr>
+                  <th scope="col">Sending Acoount</th>
+                  <th scope="col">Receiving Account</th>
+                  <th scope="col">Amount</th>
+                  <th scope="col">Transaction Description</th>
+                  <th scope="col">Date</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Type</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="table-row">
+                {transactions.map((transaction) => (
+                  <tr key={transaction.transactionId} className="table-el">
+                    <td>
+                      <em>Sending Acoount</em>{" "}
+                      {transaction.sourceID
+                        ? transaction.sourceID
+                        : "From Bank"}
+                    </td>
+                    <td>
+                      <em>Receiving Account</em> {transaction.destId}
+                    </td>
+                    <td>
+                      <em>Amount</em>
+                      <CurrencyFormat
+                        value={transaction.amount}
+                        thousandSeparator={true}
+                        prefix="€"
+                        displayType="text"
+                        className="balance"
+                      />
+                    </td>
+                    <td>
+                      <em>Transaction Description</em> {transaction.description}
+                    </td>
+                    <td>
+                      <em>Date</em>
+                      {new Date(transaction.timestamp).toUTCString()}
+                    </td>
+                    <td>
+                      <em>Status</em>
+                      {transaction.status}
+                    </td>
+                    <td>
+                      <em>Type</em>
+                      {transaction.destId === customerAccID
+                        ? "Credit"
+                        : "Debit"}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <h3 className="noTransact">
+              You haven't made any transactions yet.
+            </h3>
+          )}
         </div>
       </div>
     </StyledWrap>
@@ -57,6 +95,17 @@ const StyledWrap = styled.div`
       margin: 2em auto;
       max-width: 75em;
     }
+  }
+
+  .table-el {
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .noTransact {
+    text-align: center;
+    width: 100%;
+    font-weight: 300;
+    font-size: 1.8rem;
   }
 
   .responsive-table {
@@ -129,6 +178,8 @@ const StyledWrap = styled.div`
 
       @media (min-width: 30em) {
         padding: 0.75em 0.5em;
+        display: flex;
+        justify-content: space-between;
       }
 
       @media (min-width: 48em) {
@@ -143,6 +194,20 @@ const StyledWrap = styled.div`
 
       @media (min-width: 75em) {
         padding: 0.75em;
+      }
+    }
+
+    td em {
+      display: block;
+      text-decoration: underline;
+
+      @media (min-width: 30em) {
+        display: block;
+        text-decoration: none;
+      }
+
+      @media (min-width: 48em) {
+        display: none;
       }
     }
 
@@ -178,22 +243,6 @@ const StyledWrap = styled.div`
           @media (min-width: 48em) {
             background-color: rgba(0, 0, 0, 0.12);
           }
-        }
-      }
-
-      th[scope="row"] {
-        background-color: #333333;
-        color: white;
-
-        @media (min-width: 30em) {
-          border-left: 1px solid ${(props) => props.theme.color.outline};
-          border-bottom: 1px solid ${(props) => props.theme.color.outline};
-        }
-
-        @media (min-width: 48em) {
-          background-color: transparent;
-          color: rgba(0, 0, 0.87);
-          text-align: left;
         }
       }
 
