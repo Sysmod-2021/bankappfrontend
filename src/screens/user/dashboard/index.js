@@ -12,7 +12,10 @@ const Dashboard = (props) => {
         customerName={customerName}
         accountNumber={value.accountId}
       />
-      <History transactions={value.transactions} />
+      <History
+        transactions={value.transactions}
+        customerAccID={value.accountId}
+      />
     </div>
   );
 };

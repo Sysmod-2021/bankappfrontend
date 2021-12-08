@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import CurrencyFormat from "react-currency-format";
 
-const History = ({ transactions }) => {
+const History = ({ transactions, customerAccID }) => {
   return (
     <StyledWrap>
       <div className="transactions-wapper">
@@ -17,13 +17,17 @@ const History = ({ transactions }) => {
                   <th scope="col">Transaction Description</th>
                   <th scope="col">Date</th>
                   <th scope="col">Status</th>
+                  <th scope="col">Type</th>
                 </tr>
               </thead>
               <tbody className="table-row">
                 {transactions.map((transaction) => (
                   <tr key={transaction.transactionId} className="table-el">
                     <td scope="row">
-                      <em>Sending Acoount</em> {transaction.sourceID}
+                      <em>Sending Acoount</em>{" "}
+                      {transaction.sourceID
+                        ? transaction.sourceID
+                        : "From Bank"}
                     </td>
                     <td>
                       <em>Receiving Account</em> {transaction.destId}
@@ -48,6 +52,12 @@ const History = ({ transactions }) => {
                     <td>
                       <em>Status</em>
                       {transaction.status}
+                    </td>
+                    <td>
+                      <em>Type</em>
+                      {transaction.destId === customerAccID
+                        ? "Credit"
+                        : "Debit"}
                     </td>
                   </tr>
                 ))}
