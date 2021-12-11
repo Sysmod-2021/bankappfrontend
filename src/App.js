@@ -1,10 +1,9 @@
-import { ThemeProvider } from 'styled-components';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { ThemeProvider } from "styled-components";
+import { BrowserRouter as Router } from "react-router-dom";
 
-import theme from './theme';
-import AppRouter from './router';
-import GlobalStyle from './theme/globalStyles';
-
+import theme from "./theme";
+import AppRouter from "./router";
+import GlobalStyle from "./theme/globalStyles";
 
 function App() {
   return (

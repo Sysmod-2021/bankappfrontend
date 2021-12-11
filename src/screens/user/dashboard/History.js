@@ -11,7 +11,7 @@ const History = ({ transactions, customerAccID }) => {
             <table className="responsive-table">
               <thead>
                 <tr>
-                  <th scope="col">Sending Acoount</th>
+                  <th scope="col">Sending Account</th>
                   <th scope="col">Receiving Account</th>
                   <th scope="col">Amount</th>
                   <th scope="col">Transaction Description</th>
@@ -21,19 +21,19 @@ const History = ({ transactions, customerAccID }) => {
                 </tr>
               </thead>
               <tbody className="table-row">
-                {transactions.map((transaction) => (
-                  <tr key={transaction.transactionId} className="table-el">
+                {transactions.map((transaction, index) => (
+                  <tr key={index} className="table-el">
                     <td>
-                      <em>Sending Acoount</em>{" "}
+                      <span>Sending Account</span>{" "}
                       {transaction.sourceID
                         ? transaction.sourceID
                         : "From Bank"}
                     </td>
                     <td>
-                      <em>Receiving Account</em> {transaction.destId}
+                      <span>Receiving Account</span> {transaction.destId}
                     </td>
                     <td>
-                      <em>Amount</em>
+                      <span>Amount</span>
                       <CurrencyFormat
                         value={transaction.amount}
                         thousandSeparator={true}
@@ -43,18 +43,19 @@ const History = ({ transactions, customerAccID }) => {
                       />
                     </td>
                     <td>
-                      <em>Transaction Description</em> {transaction.description}
+                      <span>Transaction Description</span>{" "}
+                      {transaction.description}
                     </td>
                     <td>
-                      <em>Date</em>
+                      <span>Date</span>
                       {new Date(transaction.timestamp).toUTCString()}
                     </td>
                     <td>
-                      <em>Status</em>
+                      <span>Status</span>
                       {transaction.status}
                     </td>
                     <td>
-                      <em>Type</em>
+                      <span>Type</span>
                       {transaction.destId === customerAccID
                         ? "Credit"
                         : "Debit"}
@@ -197,11 +198,12 @@ const StyledWrap = styled.div`
       }
     }
 
-    td em {
+    td span:not(.balance) {
       display: block;
       text-decoration: underline;
 
       @media (min-width: 30em) {
+        font-style: italic;
         display: block;
         text-decoration: none;
       }
