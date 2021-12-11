@@ -25,12 +25,12 @@ const History = ({ transactions, customerAccID }) => {
                   <tr key={index} className="table-el">
                     <td>
                       <span>Sending Account</span>{" "}
-                      {transaction.sourceID
-                        ? transaction.sourceID
+                      {transaction.sourceIban
+                        ? transaction.sourceIban
                         : "From Bank"}
                     </td>
                     <td>
-                      <span>Receiving Account</span> {transaction.destId}
+                      <span>Receiving Account</span> {transaction.destIban}
                     </td>
                     <td>
                       <span>Amount</span>
