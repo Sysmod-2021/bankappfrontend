@@ -6,29 +6,27 @@ import { authenticate } from "../../api";
 import Loader from "../../components/Loader";
 import PageWrap from "../../components/AuthWrap";
 import useLocalStorage from "../../hooks/useLocalStorage";
-import Toast, { useFeedbackToast } from '../../components/Feedback';
-
+import Toast, { useFeedbackToast } from "../../components/Feedback";
 
 const LoginScreen = () => {
-
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [loading, setLoading] = useState(false)
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   let navigate = useNavigate();
-  const { open, close, feedback } = useFeedbackToast()
+  const { open, close, feedback } = useFeedbackToast();
   const [isLoggedIn, setIsLoggedIn] = useLocalStorage("isLoggedIn", false);
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const { data } = await authenticate(email, password)
+      const { data } = await authenticate(email, password);
       const { status, message } = data;
 
       setLoading(false);
 
-      if(status === "SUCCESS") {
+      if (status === "SUCCESS") {
         setIsLoggedIn(true);
 
         setEmail("");
@@ -37,47 +35,59 @@ const LoginScreen = () => {
         return;
       }
 
-      open(message, "error")
+      open(message, "error");
     } catch (error) {
-      open(error.message, "error")
+      if (error.response.status === 400) {
+        open("Invalid Credentials", "error");
+        return;
+      }
+
+      if (error.response.data.message) {
+        open(error.response.data.message, "error");
+        return;
+      }
+
+      open(error.message, "error");
     }
-  }
+  };
 
   return (
     <PageWrap>
       <StyledWrap>
         <h2 className="heading">Openbank Login</h2>
-        <form className="login-form" onSubmit={e => handleSubmit(e)}>
+        <form className="login-form" onSubmit={(e) => handleSubmit(e)}>
           <label htmlFor="email">
             Email
-            <input 
+            <input
               required
-              id="email" 
-              type="email"  
+              id="email"
+              type="email"
               value={email}
               placeholder="Email"
-              onChange={e => setEmail(e.target.value)} 
+              onChange={(e) => setEmail(e.target.value)}
             />
-          </label>  
+          </label>
           <label htmlFor="password">
             Password
-            <input 
+            <input
               required
-              id="password" 
-              type="password"  
+              id="password"
+              type="password"
               value={password}
               placeholder="Password"
-              onChange={e => setPassword(e.target.value)} 
+              onChange={(e) => setPassword(e.target.value)}
             />
-          </label>   
-          <button className="submit-btn" type="submit" disabled={loading}>{loading ? <Loader /> : "Login" }</button>
+          </label>
+          <button className="submit-btn" type="submit" disabled={loading}>
+            {loading ? <Loader /> : "Login"}
+          </button>
         </form>
       </StyledWrap>
 
-      { feedback && <Toast close={close} feedback={feedback} /> }
+      {feedback && <Toast close={close} feedback={feedback} />}
     </PageWrap>
   );
-}
+};
 
 const StyledWrap = styled.div`
   min-height: 500px;
@@ -99,38 +109,39 @@ const StyledWrap = styled.div`
     align-items: center;
     width: 100%;
     background: white;
-    border: 1px solid ${props => props.theme.color.outline}; 
+    border: 1px solid ${(props) => props.theme.color.outline};
   }
 
-  .login-form label {    
+  .login-form label {
     width: 100%;
   }
 
   .login-form input {
     min-height: 40px;
     width: 100%;
-    margin: .5rem 0 1.5rem;
-    padding: 0 .75rem;
-    outline-color: ${props => props.theme.color.primary};
-    border: 1px solid ${props => props.theme.color.outline02};
+    margin: 0.5rem 0 1.5rem;
+    padding: 0 0.75rem;
+    outline-color: ${(props) => props.theme.color.primary};
+    border: 1px solid ${(props) => props.theme.color.outline02};
   }
 
   .login-form .submit-btn {
     text-align: center;
-    padding: .75rem 1.25rem;
+    padding: 0.75rem 1.25rem;
     min-width: 150px;
     border-radius: 5px;
-    font-size: .9rem;
+    font-size: 0.9rem;
     margin-top: 1rem;
-    background: ${props => props.theme.color.primary};
+    background: ${(props) => props.theme.color.primary};
     font-weight: bold;
-	  color: white;
+    color: white;
   }
 
   .login-form .submit-btn:hover,
   .login-form .submit-btn:focus {
-    box-shadow: 0 0 0 2px white, 0 0 0 3px ${props => props.theme.color.primary};
+    box-shadow: 0 0 0 2px white,
+      0 0 0 3px ${(props) => props.theme.color.primary};
   }
-`
+`;
 
 export default LoginScreen;
