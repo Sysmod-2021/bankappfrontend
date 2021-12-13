@@ -17,7 +17,6 @@ const History = ({ transactions, customerAccID }) => {
                   <th scope="col">Transaction Description</th>
                   <th scope="col">Date</th>
                   <th scope="col">Status</th>
-                  <th scope="col">Type</th>
                 </tr>
               </thead>
               <tbody className="table-row">
@@ -53,12 +52,6 @@ const History = ({ transactions, customerAccID }) => {
                     <td>
                       <span>Status</span>
                       {transaction.status}
-                    </td>
-                    <td>
-                      <span>Type</span>
-                      {transaction.destId === customerAccID
-                        ? "Credit"
-                        : "Debit"}
                     </td>
                   </tr>
                 ))}
