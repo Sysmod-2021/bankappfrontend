@@ -1,7 +1,13 @@
 import styled from "styled-components";
 import CurrencyFormat from "react-currency-format";
 
-const Overview = ({ balance, customerName, accountNumber, customerIban }) => {
+const Overview = ({
+  balance,
+  customerName,
+  accountNumber,
+  customerIban,
+  accountStatus,
+}) => {
   return (
     <StyledWrap>
       <div className="wrapper">
@@ -15,6 +21,9 @@ const Overview = ({ balance, customerName, accountNumber, customerIban }) => {
           />
         </div>
         <div className="is-right">
+          <p>
+            Account Status: <strong>{accountStatus}</strong>
+          </p>
           <p>{customerName}</p>
           <p className="acc"> {customerIban}</p>
         </div>

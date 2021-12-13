@@ -12,6 +12,7 @@ const Dashboard = (props) => {
         customerName={customerName}
         accountNumber={value.accountId}
         customerIban={value.accountIban}
+        accountStatus={value.accountStatus}
       />
       <History
         transactions={value.transactions}
