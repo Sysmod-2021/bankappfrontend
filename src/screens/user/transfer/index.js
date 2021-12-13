@@ -2,7 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import CurrencyFormat from "react-currency-format";
 
-import { makeP2PTransfer } from "../../../api";
+import { makeP2PTransferWithIban } from "../../../api";
 import Loader from "../../../components/Loader";
 import Toast, { useFeedbackToast } from "../../../components/Feedback";
 
@@ -12,7 +12,7 @@ const Transfer = () => {
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
   const [description, setDescription] = useState("");
-  const [receiverAccountID, setReceiverAccountID] = useState("");
+  const [receiverIban, setReceiverIban] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,8 +23,8 @@ const Transfer = () => {
     }
 
     try {
-      const response = await makeP2PTransfer(
-        receiverAccountID,
+      const response = await makeP2PTransferWithIban(
+        receiverIban,
         amount,
         description
       );
@@ -45,7 +45,7 @@ const Transfer = () => {
 
       setAmount("");
       setDescription("");
-      setReceiverAccountID("");
+      setReceiverIban("");
       open("Your transfer was successful :)", status);
     } catch (error) {
       open(error.message, "error");
@@ -55,14 +55,14 @@ const Transfer = () => {
   return (
     <>
       <StyledForm onSubmit={(e) => handleSubmit(e)}>
-        <label htmlFor="beneficiary-account">
+        <label htmlFor="beneficiary-iban">
           Beneficiary Account
           <input
-            id="beneficiary-account"
+            id="beneficiary-iban"
             type="text"
-            value={receiverAccountID}
-            onChange={(e) => setReceiverAccountID(e.target.value)}
-            placeholder="Beneficiary Account"
+            value={receiverIban}
+            onChange={(e) => setReceiverIban(e.target.value)}
+            placeholder="Beneficiary IBAN"
             required
           />
         </label>

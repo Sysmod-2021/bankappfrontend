@@ -17,7 +17,6 @@ const History = ({ transactions, customerAccID }) => {
                   <th scope="col">Transaction Description</th>
                   <th scope="col">Date</th>
                   <th scope="col">Status</th>
-                  <th scope="col">Type</th>
                 </tr>
               </thead>
               <tbody className="table-row">
@@ -25,12 +24,12 @@ const History = ({ transactions, customerAccID }) => {
                   <tr key={index} className="table-el">
                     <td>
                       <span>Sending Account</span>{" "}
-                      {transaction.sourceID
-                        ? transaction.sourceID
+                      {transaction.sourceIban
+                        ? transaction.sourceIban
                         : "From Bank"}
                     </td>
                     <td>
-                      <span>Receiving Account</span> {transaction.destId}
+                      <span>Receiving Account</span> {transaction.destIban}
                     </td>
                     <td>
                       <span>Amount</span>
@@ -53,12 +52,6 @@ const History = ({ transactions, customerAccID }) => {
                     <td>
                       <span>Status</span>
                       {transaction.status}
-                    </td>
-                    <td>
-                      <span>Type</span>
-                      {transaction.destId === customerAccID
-                        ? "Credit"
-                        : "Debit"}
                     </td>
                   </tr>
                 ))}
